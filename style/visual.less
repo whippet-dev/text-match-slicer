@@ -1,0 +1,329 @@
+/* ==========================================================
+   Root visual container
+   ========================================================== */
+
+.textMatchSlicer {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #252423;
+    box-sizing: border-box;
+    padding: 8px;
+
+    /* CSS variables populated from formatting pane settings */
+    --placeholder-color: #605e5c;
+    --focus-outline: #605e5c;
+}
+
+/* Ensure all elements inherit border-box sizing */
+.textMatchSlicer * {
+    box-sizing: border-box;
+}
+
+/* ==========================================================
+   Main wrapper
+   ========================================================== */
+
+.slicerWrapper {
+    width: 100%;
+}
+
+/* ==========================================================
+   Search box
+   ========================================================== */
+
+.searchBox {
+    display: block;
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 38px;
+
+    /* Top Right Bottom Left */
+    padding: 6px 8px 6px 14px;
+
+    border: 1px solid #c8c6c4;
+    border-radius: 0px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    color: #252423;
+    background: #ffffff;
+}
+
+/* Placeholder text styling */
+.searchBox::placeholder {
+    color: var(--placeholder-color);
+    font-family: inherit;
+    opacity: 1;
+}
+
+/* Keyboard focus styling */
+.searchBox:focus {
+    outline: 2px solid var(--focus-outline);
+    outline-offset: 1px;
+}
+
+/* Disabled state when no field is bound */
+.searchBox:disabled {
+    background: #f3f2f1;
+    color: #a19f9d;
+}
+
+/* ==========================================================
+   Button row
+   Search | Clear | Any | All
+   ========================================================== */
+
+.controlsRow {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    gap: 6px;
+    margin-top: 6px;
+}
+
+/* ==========================================================
+   Shared button styling
+   Applies to:
+   - Search button
+   - Clear button
+   - Any button
+   - All button
+   ========================================================== */
+
+.iconButton,
+.modeButton {
+
+    /* Equal width buttons */
+    flex: 1 1 0;
+    min-width: 0;
+
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    margin: 0;
+    padding: 0 8px;
+
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+    border-radius: 0px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+
+    background-color: #f3f2f1;
+    color: #252423;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+        background-color 0.15s ease,
+        filter 0.15s ease,
+        opacity 0.15s ease;
+}
+
+/* Search and Clear icon sizing */
+.iconButton {
+    font-size: 16px;
+}
+
+/* ==========================================================
+   Hover states
+   ========================================================== */
+
+.iconButton:hover,
+.modeButton:hover {
+    filter: brightness(0.95);
+}
+
+/* ==========================================================
+   Mouse click state
+   ========================================================== */
+
+.iconButton:active,
+.modeButton:active {
+    filter: brightness(0.85);
+}
+
+/* ==========================================================
+   Selected search mode
+   Applied via visual.ts
+   ========================================================== */
+
+.modeButton.selected {
+    font-weight: 700;
+}
+
+/* ==========================================================
+   Disabled state
+   Applied via visual.ts
+   ========================================================== */
+
+.iconButton.disabled,
+.modeButton.disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ==========================================================
+   Keyboard focus state
+   ========================================================== */
+
+.iconButton:focus,
+.modeButton:focus {
+    outline: 2px solid var(--focus-outline);
+    outline-offset: 2px;
+}
+
+/* ==========================================================
+   Landing page / no field bound state
+   ========================================================== */
+
+.landingPage {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    overflow: auto;
+    border: 1px solid #c8c6c4;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #252423;
+    font-family: inherit;
+}
+
+.landingTitle {
+    color: red !important;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.landingSubtitle {
+    font-size: 12px;
+    line-height: 1.35;
+    color: #605e5c;
+    margin-bottom: 12px;
+}
+
+.landingSection {
+    margin-top: 8px;
+}
+
+.landingSectionTitle {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.landingExamples {
+    display: block;
+}
+
+.landingExample {
+    display: flex;
+    align-items: flex-start;
+    font-size: 11px;
+    line-height: 1.25;
+    margin-bottom: 5px;
+}
+
+.landingCode {
+    display: inline-block;
+    min-width: 78px;
+    box-sizing: border-box;
+    margin-right: 6px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background: #f3f2f1;
+    color: #252423;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.landingExampleText {
+    color: #323130;
+}
+
+.landingHint {
+    margin-top: 12px;
+    padding: 8px;
+    border-left: 3px solid #0078d4;
+    border-radius: 3px;
+    background: #f8f8f8;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #323130;
+}
+
+.landingHintTitle {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+/* ==========================================================
+   Windows High Contrast Mode support
+   ========================================================== */
+
+@media (forced-colors: active) {
+
+    .searchBox,
+    .iconButton,
+    .modeButton {
+        border: 1px solid ButtonText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .searchBox:focus {
+        outline: none;
+        border: 1px solid ButtonText;
+        box-shadow: none;
+    }
+
+    .iconButton:focus,
+    .modeButton:focus {
+        outline: 2px solid Highlight;
+    }
+
+    .landingPage {
+        border: 1px solid ButtonText;
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .landingPage code,
+    .landingCode,
+    .landingExampleText,
+    .landingSubtitle,
+    .landingHint,
+    .landingHintTitle {
+        background: Canvas;
+        color: CanvasText;
+    }
+
+    .landingCode {
+        border: 1px solid ButtonText;
+    }
+
+    .landingHint {
+        border-left: 3px solid Highlight;
+    }
+}

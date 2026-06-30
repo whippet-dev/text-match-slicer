@@ -1,0 +1,26 @@
+{
+    "visual": {
+        "name": "textMatchSlicer",
+        "displayName": "Text Match Slicer",
+        "guid": "textMatchSlicer92D6301CCF3147A9A8215D2F0B622771",
+        "visualClassName": "Visual",
+        "version": "1.0.0.0",
+        "description": "A text matching slicer for filtering rows by words, phrases, wildcards and Any/All matching.",
+        "supportUrl": "https://github.com/whippet-dev/text-match-slicer/issues",
+        "gitHubUrl": "https://github.com/whippet-dev/text-match-slicer"
+    },
+    "apiVersion": "5.3.0",
+    "author": {
+        "name": "Whippet Dev",
+        "email": "whippet.dev@gmail.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": [],
+    "version": "1.0.0.0"
+}
