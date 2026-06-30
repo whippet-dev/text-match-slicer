@@ -283,5 +283,6 @@
   ],
   "supportsKeyboardFocus": true,
   "supportsLandingPage": true,
+  "supportsSynchronizingFilterState": true,
   "privileges": []
 }

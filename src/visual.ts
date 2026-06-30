@@ -324,15 +324,23 @@ All = match every word or phrase`;
         modeSection: HTMLDivElement,
         modeTitle: HTMLDivElement
     ): void {
+        const highContrast = this.getHighContrastColors();
+
         page.style.width = "100%";
         page.style.height = "100%";
         page.style.boxSizing = "border-box";
         page.style.padding = "12px";
         page.style.overflow = "auto";
-        page.style.border = "1px solid #c8c6c4";
+        page.style.border = highContrast.isHighContrast
+            ? `1px solid ${highContrast.border}`
+            : "1px solid #c8c6c4";
         page.style.borderRadius = "4px";
-        page.style.backgroundColor = "#ffffff";
-        page.style.color = "#252423";
+        page.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : "#ffffff";
+        page.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : "#252423";
         page.style.fontFamily = "Arial, sans-serif";
 
         title.style.fontSize = "16px";
@@ -342,7 +350,9 @@ All = match every word or phrase`;
 
         subtitle.style.fontSize = "12px";
         subtitle.style.lineHeight = "1.35";
-        subtitle.style.color = "#605e5c";
+        subtitle.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : "#605e5c";
         subtitle.style.marginBottom = "12px";
 
         examplesTitle.style.fontSize = "12px";
@@ -370,8 +380,15 @@ All = match every word or phrase`;
             element.style.marginRight = "6px";
             element.style.padding = "2px 4px";
             element.style.borderRadius = "3px";
-            element.style.backgroundColor = "#f3f2f1";
-            element.style.color = "#252423";
+            element.style.backgroundColor = highContrast.isHighContrast
+                ? highContrast.background
+                : "#f3f2f1";
+            element.style.color = highContrast.isHighContrast
+                ? highContrast.foreground
+                : "#252423";
+            element.style.border = highContrast.isHighContrast
+                ? `1px solid ${highContrast.border}`
+                : "none";
             element.style.fontFamily = 'Consolas, "Courier New", monospace';
             element.style.fontSize = "11px";
             element.style.whiteSpace = "nowrap";
@@ -380,20 +397,51 @@ All = match every word or phrase`;
         const exampleText = examplesList.querySelectorAll(".landingExampleText");
         exampleText.forEach(text => {
             const element = text as HTMLElement;
-            element.style.color = "#323130";
+            element.style.color = highContrast.isHighContrast
+                ? highContrast.foreground
+                : "#323130";
         });
 
         modeSection.style.marginTop = "12px";
         modeSection.style.padding = "8px";
-        modeSection.style.borderLeft = "3px solid #0078d4";
+        modeSection.style.borderLeft = highContrast.isHighContrast
+            ? `3px solid ${highContrast.border}`
+            : "3px solid #0078d4";
         modeSection.style.borderRadius = "3px";
-        modeSection.style.backgroundColor = "#f8f8f8";
+        modeSection.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : "#f8f8f8";
         modeSection.style.fontSize = "11px";
         modeSection.style.lineHeight = "1.35";
-        modeSection.style.color = "#323130";
+        modeSection.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : "#323130";
 
         modeTitle.style.fontWeight = "700";
         modeTitle.style.marginBottom = "4px";
+    }
+
+    private getHighContrastColors(): {
+        isHighContrast: boolean;
+        background: string;
+        foreground: string;
+        selectedBackground: string;
+        selectedForeground: string;
+        border: string;
+    } {
+        const palette = this.host.colorPalette;
+        const isHighContrast = Boolean(palette?.isHighContrast);
+        const background = palette?.background?.value || "Canvas";
+        const foreground = palette?.foreground?.value || "CanvasText";
+
+        return {
+            isHighContrast,
+            background,
+            foreground,
+            selectedBackground: foreground,
+            selectedForeground: background,
+            border: foreground
+        };
     }
     // ==========================================================
     // Control Creation Helpers
@@ -573,6 +621,7 @@ All = match every word or phrase`;
         const inputFontSize = Math.max(this.settings.fontSize, Math.round(this.settings.inputHeight * 0.42));
         const buttonHeight = `${this.settings.inputHeight}px`;
         const radius = `${this.settings.cornerRadius}px`;
+        const highContrast = this.getHighContrastColors();
 
         const fontFamily = `"${this.settings.fontFamily}", sans-serif`;
         this.target.style.fontFamily = fontFamily;
@@ -588,12 +637,29 @@ All = match every word or phrase`;
         this.input.style.display = "block";
         this.input.style.height = `${this.settings.inputHeight}px`;
         this.input.style.fontSize = `${inputFontSize}px`;
-        this.input.style.backgroundColor = this.settings.inputBackgroundColor;
-        this.input.style.borderColor = this.settings.inputBorderColor;
+        this.input.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : this.settings.inputBackgroundColor;
+        this.input.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : "#252423";
+        this.input.style.borderColor = highContrast.isHighContrast
+            ? highContrast.border
+            : this.settings.inputBorderColor;
         this.input.style.borderRadius = radius;
 
-        this.target.style.setProperty("--placeholder-color", this.settings.placeholderColor);
-        this.target.style.setProperty("--focus-outline", this.settings.enhancedFocus ? "#605e5c" : "transparent");
+        this.target.style.setProperty(
+            "--placeholder-color",
+            highContrast.isHighContrast ? highContrast.foreground : this.settings.placeholderColor
+        );
+        this.target.style.setProperty(
+            "--focus-outline",
+            this.settings.enhancedFocus
+                ? highContrast.isHighContrast
+                    ? highContrast.border
+                    : "#605e5c"
+                : "transparent"
+        );
 
         this.controlsRow.style.display = "flex";
         this.controlsRow.style.flexDirection = "row";
@@ -618,23 +684,41 @@ All = match every word or phrase`;
             control.style.alignItems = "center";
             control.style.justifyContent = "center";
             control.style.textAlign = "center";
-            control.style.border = "none";
+            control.style.border = highContrast.isHighContrast
+                ? `1px solid ${highContrast.border}`
+                : "none";
             control.style.borderRadius = radius;
             control.style.boxShadow = "none";
             control.style.padding = "0 8px";
         });
 
-        this.searchButton.style.backgroundColor = this.settings.searchButtonColor;
-        this.searchButton.style.color = this.settings.searchButtonTextColor;
+        this.searchButton.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : this.settings.searchButtonColor;
+        this.searchButton.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : this.settings.searchButtonTextColor;
 
-        this.clearButton.style.backgroundColor = this.settings.clearButtonColor;
-        this.clearButton.style.color = this.settings.clearButtonTextColor;
+        this.clearButton.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : this.settings.clearButtonColor;
+        this.clearButton.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : this.settings.clearButtonTextColor;
 
-        this.anyButton.style.backgroundColor = this.settings.modeButtonColor;
-        this.anyButton.style.color = this.settings.modeButtonTextColor;
+        this.anyButton.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : this.settings.modeButtonColor;
+        this.anyButton.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : this.settings.modeButtonTextColor;
 
-        this.allButton.style.backgroundColor = this.settings.modeButtonColor;
-        this.allButton.style.color = this.settings.modeButtonTextColor;
+        this.allButton.style.backgroundColor = highContrast.isHighContrast
+            ? highContrast.background
+            : this.settings.modeButtonColor;
+        this.allButton.style.color = highContrast.isHighContrast
+            ? highContrast.foreground
+            : this.settings.modeButtonTextColor;
 
         this.searchButton.style.fontSize = `${Math.max(this.settings.fontSize + 4, Math.round(this.settings.inputHeight * 0.55))}px`;
         this.clearButton.style.fontSize = `${Math.max(this.settings.fontSize + 4, Math.round(this.settings.inputHeight * 0.55))}px`;
@@ -644,13 +728,15 @@ All = match every word or phrase`;
         this.anyButton.style.display = this.settings.showSearchMode ? "flex" : "none";
         this.allButton.style.display = this.settings.showSearchMode ? "flex" : "none";
 
-        this.updateModeButtons()
+        this.updateModeButtons();
     }
     // ==========================================================
     // Search Mode
     // Updates Any / All button appearance and state
     // ==========================================================
     private updateModeButtons(): void {
+        const highContrast = this.getHighContrastColors();
+
         this.anyButton.classList.toggle("selected", !this.useAllWords);
         this.allButton.classList.toggle("selected", this.useAllWords);
 
@@ -658,20 +744,54 @@ All = match every word or phrase`;
         this.allButton.setAttribute("aria-pressed", String(this.useAllWords));
 
         this.anyButton.style.backgroundColor = !this.useAllWords
-            ? this.settings.selectedModeButtonColor
-            : this.settings.modeButtonColor;
+            ? highContrast.isHighContrast
+                ? highContrast.selectedBackground
+                : this.settings.selectedModeButtonColor
+            : highContrast.isHighContrast
+                ? highContrast.background
+                : this.settings.modeButtonColor;
 
         this.anyButton.style.color = !this.useAllWords
-            ? this.settings.selectedModeButtonTextColor
-            : this.settings.modeButtonTextColor;
+            ? highContrast.isHighContrast
+                ? highContrast.selectedForeground
+                : this.settings.selectedModeButtonTextColor
+            : highContrast.isHighContrast
+                ? highContrast.foreground
+                : this.settings.modeButtonTextColor;
 
         this.allButton.style.backgroundColor = this.useAllWords
-            ? this.settings.selectedModeButtonColor
-            : this.settings.modeButtonColor;
+            ? highContrast.isHighContrast
+                ? highContrast.selectedBackground
+                : this.settings.selectedModeButtonColor
+            : highContrast.isHighContrast
+                ? highContrast.background
+                : this.settings.modeButtonColor;
 
         this.allButton.style.color = this.useAllWords
-            ? this.settings.selectedModeButtonTextColor
-            : this.settings.modeButtonTextColor;
+            ? highContrast.isHighContrast
+                ? highContrast.selectedForeground
+                : this.settings.selectedModeButtonTextColor
+            : highContrast.isHighContrast
+                ? highContrast.foreground
+                : this.settings.modeButtonTextColor;
+        if (highContrast.isHighContrast) {
+            this.anyButton.style.border = !this.useAllWords
+                ? "2px solid Highlight"
+                : `1px solid ${highContrast.border}`;
+
+            this.allButton.style.border = this.useAllWords
+                ? "2px solid Highlight"
+                : `1px solid ${highContrast.border}`;
+
+            this.anyButton.style.fontWeight = !this.useAllWords ? "700" : "400";
+            this.allButton.style.fontWeight = this.useAllWords ? "700" : "400";
+        } else {
+            this.anyButton.style.border = "none";
+            this.allButton.style.border = "none";
+
+            this.anyButton.style.fontWeight = "400";
+            this.allButton.style.fontWeight = "400";
+    }
     }
     // ==========================================================
     // Control State
