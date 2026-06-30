@@ -1,34 +1,34 @@
 # Text Match Slicer
 
-**Text Match Slicer** is a Power BI custom visual that lets report users filter a text column using one or more words, exact phrases, wildcards, and Any/All matching.
+**Text Match Slicer** is a Power BI custom visual that lets report users filter a text column using one or more words, exact phrases, wildcards and Any/All matching.
 
-It is designed for reports that contain free-text data such as feedback, comments, notes, case descriptions, call logs, survey responses, service requests, or operational records.
+It is designed for reports that contain free-text data such as feedback, comments, notes, case descriptions, call logs, survey responses, service requests or operational records.
 
 ## Features
 
 * Search a text column using one or more words
 * Match **Any** search term or **All** search terms
 * Search exact phrases using quotation marks
-* Use wildcard searches for starts-with, ends-with, and contains matching
+* Use wildcard searches for starts-with, ends-with and contains matching
 * Optional search while typing
 * Configurable typing delay for better performance on larger datasets
 * Clear search button
 * Customisable placeholder text
 * Customisable search and clear button text/icons
-* Customisable font, colours, sizing, spacing, and corner radius
+* Customisable font, colours, sizing, spacing and corner radius
 * Keyboard-accessible controls
 * Enhanced focus indicators for accessibility
-* Modern Power BI format pane support using `getFormattingModel()`
+* Modern Power BI format pane support
 
 ## Search examples
 
-| Search input   | Behaviour                                                                     |
-| -------------- | ----------------------------------------------------------------------------- |
-| `apple banana` | Searches for the words `apple` and `banana`                                   |
-| `"red apple"`  | Searches for the exact phrase `red apple`                                     |
-| `apple*`       | Finds words starting with `apple`, such as `apple`, `apples`, or `applewood`  |
-| `*apple`       | Finds words ending with `apple`, such as `apple`, `pineapple`, or `crabapple` |
-| `*apple*`      | Finds text containing `apple`, such as `apple`, `pineapple`, or `application` |
+| Search input | Behaviour |
+| --- | --- |
+| `apple banana` | Searches for the words `apple` and `banana` |
+| `"red apple"` | Searches for the exact phrase `red apple` |
+| `apple*` | Finds words starting with `apple`, such as `apple`, `apples`, or `applewood` |
+| `*apple` | Finds words ending with `apple`, such as `apple`, `pineapple`, or `crabapple` |
+| `*apple*` | Finds text containing `apple`, such as `apple`, `pineapple`, or `application` |
 
 ## Search modes
 
@@ -74,10 +74,10 @@ This matches rows containing the phrase `red apple` in that order.
 
 Wildcards can be used at the beginning or end of a search term.
 
-| Pattern  | Example   | Behaviour                              |
-| -------- | --------- | -------------------------------------- |
-| `word*`  | `apple*`  | Finds words starting with `apple`      |
-| `*word`  | `*apple`  | Finds words ending with `apple`        |
+| Pattern | Example | Behaviour |
+| --- | --- | --- |
+| `word*` | `apple*` | Finds words starting with `apple` |
+| `*word` | `*apple` | Finds words ending with `apple` |
 | `*word*` | `*apple*` | Finds text containing `apple` anywhere |
 
 ## Pasting multiple values
@@ -119,9 +119,14 @@ The visual includes format pane settings for:
 * Search box background
 * Search box border
 * Placeholder colour
-* Button colour
-* Button text colour
-* Selected mode colour
+* Search button background
+* Search button text
+* Clear button background
+* Clear button text
+* Mode button background
+* Mode button text
+* Selected mode background
+* Selected mode text
 
 ### Behaviour
 
@@ -148,6 +153,23 @@ Users should be able to:
 * Tab out of the visual
 * See visible focus indicators when enhanced focus is enabled
 
+## Privacy and security
+
+Text Match Slicer runs inside Power BI as a custom visual.
+
+The visual does not intentionally:
+
+* send report data to external services
+* make external network requests
+* collect telemetry
+* use cookies
+* use browser local storage
+* require special Power BI visual privileges
+
+Search terms are used only to evaluate the text values supplied to the visual by Power BI and to apply a Power BI filter back to the report.
+
+As with any Power BI report, report authors should only bind fields that are appropriate for their intended audience.
+
 ## Performance notes
 
 For larger datasets, complex searches may take slightly longer, especially when using:
@@ -162,11 +184,13 @@ For slower reports or larger text columns, consider turning **Search while typin
 
 ## Known limitations
 
+* The visual searches the text values supplied to it by Power BI. Very large or high-cardinality text columns may be subject to Power BI data reduction limits.
+* Very broad searches can create large filter selections and may be slower on large datasets.
 * Symbol-only searches are not currently supported. For example, searching for `£` alone may not return matches.
 * Searching for values such as `£25.50` may still match because the numeric part is searchable.
 * Pasted comma-separated lists may not behave the same as pasted line-separated lists.
 * Multi-word pasted values should be wrapped in quotation marks if they need to be treated as exact phrases.
-* Very large datasets may require search while typing to be turned off for the smoothest experience.
+* Very large datasets may require **Search while typing** to be turned off for the smoothest experience.
 
 ## Recommended use cases
 
@@ -185,7 +209,7 @@ This visual is useful for:
 
 ## Development status
 
-This visual is under active development.
+Text Match Slicer is currently at initial release stage.
 
 Current focus areas:
 
@@ -208,6 +232,18 @@ Potential future enhancements:
 
 Initial development version: `1.0.0`
 
+## Publisher
+
+Text Match Slicer is published by Whippet Dev.
+
+Contact: whippet.dev@gmail.com
+
 ## Support
 
-For support, issues, or feature requests, contact the visual author or raise an issue through the project repository if available.
+For support, issues, or feature requests, raise an issue in the project repository:
+
+https://github.com/whippet-dev/text-match-slicer/issues
+
+You can also contact the publisher at:
+
+whippet.dev@gmail.com
